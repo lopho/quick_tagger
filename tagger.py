@@ -24,7 +24,6 @@ def tagger(path, tags):
     num_files = len(files)
     img_tags = []
     img_tag_files = []
-    tag_map = { tags[t]: t for t in tags }
     for i,im in enumerate(files):
         img_tags.append(set())
         tagfile = os.path.join(path, os.path.splitext(im)[0]+'.txt')
@@ -32,7 +31,7 @@ def tagger(path, tags):
         if os.path.isfile(tagfile):
             with open(tagfile, 'r') as f:
                 img_tags[i] = {
-                        tag_map[t] for t in f.read().strip().split(' ') if t in tag_map
+                        t for t in f.read().strip().split(' ') if len(t) > 0
                 }
     i = 0
     cv2.namedWindow(window, cv2.WINDOW_NORMAL)
@@ -43,7 +42,7 @@ def tagger(path, tags):
         img = cv2.imread(os.path.join(path, file))
         cv2.imshow(window, img)
         while True:
-            info_str = file + ' ' + str([tags[t] for t in img_tag])
+            info_str = file + ' ' + str(img_tag)
             print(info_str)
             cv2.setWindowTitle(window, info_str)
             k = -1
@@ -52,16 +51,16 @@ def tagger(path, tags):
                 if cv2.getWindowProperty(window,cv2.WND_PROP_VISIBLE) < 1:
                     return
             if k in tags:
-                if k in img_tag:
-                    img_tag.remove(k)
+                if tags[k] in img_tag:
+                    img_tag.remove(tags[k])
                 else:
-                    img_tag.add(k)
+                    img_tag.add(tags[k])
             elif k == nav_clear:
                 img_tag.clear()
             # always keeps text files in sync
             with open(img_tag_file, 'w') as f:
                 for t in img_tag:
-                    f.write(tags[t] + ' ')
+                    f.write(t + ' ')
             if k == 27: # ESC # 8 <- # 13 enter
                 return
             if k == nav_next:
