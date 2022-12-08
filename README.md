@@ -2,6 +2,7 @@
 Tag images using keyboard controls.
 - Hit a letter key on your keyboard to add a tag, hit it again to remove it again.
 - Saves tags as `<image_file_name>.txt` files in the same folder as the images.
+- Loads already present text files with tags
 - Tags are automatically synced with text files.
 - Tags and image file name are output to the terminal and in the window titlebar
 ```sh
