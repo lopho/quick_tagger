@@ -28,3 +28,5 @@ nav_next = ord('w')
 nav_prev = ord('q')
 nav_clear = ord('e')
 ```
+
+Dependencies: `opencv-python`
