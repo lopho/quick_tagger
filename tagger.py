@@ -57,16 +57,20 @@ def tagger(path, tags):
                     img_tag.add(tags[k])
             elif k == nav_clear:
                 img_tag.clear()
+            elif k == 27: # ESC # 8 <- # 13 enter
+                return
+            elif k == nav_next:
+                i += 1
+                if i >= num_files:
+                    i = 0
+                break
+            elif k == nav_prev:
+                i -= 1
+                if i < 0:
+                    i = num_files-1
+                break
             # always keeps text files in sync
             with open(img_tag_file, 'w') as f:
                 for t in img_tag:
                     f.write(t + ' ')
-            if k == 27: # ESC # 8 <- # 13 enter
-                return
-            if k == nav_next:
-                i = min(i+1, num_files)
-                break
-            if k == nav_prev:
-                i = max(i-1, 0)
-                break
 tagger(path, tags)
