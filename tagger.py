@@ -17,16 +17,25 @@ tags = {
     ord('c'): 'lol',
     # and so on
 }
+def recursive_dir(path, ext):
+    r = []
+    for f in os.listdir(path):
+        jf = os.path.join(path, f)
+        if os.path.isdir(jf):
+            r += recursive_dir(jf, ext)
+        elif os.path.isfile(jf) and not jf.lower().endswith(ext):
+            r.append(jf)
+    return r
 def tagger(path, tags):
     window = 'image'
-    files = [ f for f in os.listdir(path) if not f.endswith('.txt') ]
+    files = recursive_dir(path, '.txt')
     files.sort()
     num_files = len(files)
     img_tags = []
     img_tag_files = []
     for i,im in enumerate(files):
         img_tags.append(set())
-        tagfile = os.path.join(path, os.path.splitext(im)[0]+'.txt')
+        tagfile = os.path.splitext(im)[0]+'.txt'
         img_tag_files.append(tagfile)
         if os.path.isfile(tagfile):
             with open(tagfile, 'r') as f:
@@ -39,7 +48,7 @@ def tagger(path, tags):
         file = files[i]
         img_tag_file = img_tag_files[i]
         img_tag = img_tags[i]
-        img = cv2.imread(os.path.join(path, file))
+        img = cv2.imread(file)
         cv2.imshow(window, img)
         while True:
             info_str = file + ' ' + str(img_tag)
