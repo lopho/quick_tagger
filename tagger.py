@@ -48,7 +48,7 @@ def tagger(path, tags):
         file = files[i]
         img_tag_file = img_tag_files[i]
         img_tag = img_tags[i]
-        img = cv2.imread(file)
+        img = cv2.imdecode(cv2.numpy.fromfile(file), cv2.IMREAD_UNCHANGED)
         cv2.imshow(window, img)
         while True:
             info_str = file + ' ' + str(img_tag)
